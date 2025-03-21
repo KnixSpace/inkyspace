@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Caveat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const caveat = Caveat({
   weight: ["400", "500", "600", "700"],
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={`${caveat.className} antialiased`}>
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
