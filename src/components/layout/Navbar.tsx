@@ -2,6 +2,7 @@
 import React from "react";
 import Logo from "./Logo";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -17,12 +18,12 @@ const Navbar = () => {
             <Logo H1="text-xl" SPAN="underline-offset-4" />
           </div>
           <div className="flex items-center justify-end gap-4">
-            <a href="#" className="text-xl">
+            <Link href="/auth/login" className="text-xl">
               Login
-            </a>
-            <a href="#" className="text-xl">
+            </Link>
+            <Link href="/auth/register" className="text-xl">
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
       </motion.div>

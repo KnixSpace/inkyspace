@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Caveat } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import MessageBox from "@/components/ui/MessageBox";
+import StoreProvider from "./StoreProvider";
+import Auth from "@/hoc/Auth";
 
 const caveat = Caveat({
   weight: ["400", "500", "600", "700"],
@@ -19,13 +20,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
-      <body className={`${caveat.className} antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
+      <StoreProvider>
+        <body className={`${caveat.className} antialiased`}>
+          <MessageBox />
+          {children}
+        </body>
+      </StoreProvider>
     </html>
   );
 }

@@ -40,7 +40,7 @@ const Hero = (props: Props) => {
           >
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.95 }}>
               <Link
-                href={"/signup"}
+                href={"/auth/register/?role=O"}
                 className="px-8 py-3 text-lg font-medium rounded bg-black text-white hover:text-rose-400 transition-all ease-in-out duration-500"
               >
                 Start Writing

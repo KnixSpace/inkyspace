@@ -158,4 +158,6 @@ const FeaturedBlogs = (props: Props, ref: Ref<HTMLDivElement>) => {
   );
 };
 
+FeaturedBlogs.displayName = "FeaturedBlogs";
+
 export default forwardRef(FeaturedBlogs);
