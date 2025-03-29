@@ -3,5 +3,6 @@ export interface User {
   name: string;
   email: string;
   role: "O" | "A" | "U";
+  onboardComplete: boolean;
   subscribedTags: string[];
 }
