@@ -31,8 +31,5 @@ export const subscribeToSpaces = (
   }[]
 ) => apiRequest(`/spaces/multi/subscribe`, "POST", { spaces }, {}, true);
 
-export const inviteEditors = (emails: string[]) =>
-  apiRequest("/invite/create", "POST", { emails }, {}, true);
-
 export const completeOnboarding = () =>
   apiRequest("/user/onboarding", "POST", {}, {}, true);

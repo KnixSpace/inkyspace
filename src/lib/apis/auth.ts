@@ -1,13 +1,8 @@
+import { current } from "@reduxjs/toolkit";
 import { apiRequest } from "./api";
 
 export const loginUser = (email: string, password: string) =>
-  apiRequest<{ token: string }>(
-    "/auth/login",
-    "POST",
-    { email, password },
-    {},
-    true
-  );
+  apiRequest("/auth/login", "POST", { email, password }, {}, true);
 
 export const registerUser = (
   name: string,
@@ -21,3 +16,14 @@ export const verifyEmail = (token: string) =>
 
 export const resendVerificationEmail = (email: string) =>
   apiRequest("/auth/resend-verification-email", "POST", { email });
+
+export const changePassword = (currentPassword: string, newPassword: string) =>
+  apiRequest(
+    "/auth/change-password",
+    "POST",
+    { currentPassword, newPassword },
+    {},
+    true
+  );
+
+export const logout = () => apiRequest("/auth/logout", "POST", {}, {}, true);

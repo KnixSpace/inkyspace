@@ -1,16 +1,14 @@
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
 import { type KeyboardEvent, useState } from "react";
 import { showMessage } from "../ui/MessageBox";
 import { setCurrentStep, setIsLoading } from "@/redux/features/onboardingSlice";
-import { inviteEditors } from "@/lib/apis/onboarding";
 import { motion } from "framer-motion";
 import { Loader2, Plus, X } from "lucide-react";
+import { createInvite } from "@/lib/apis/invite";
 
 const EditorInvitationStep = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.onboarding);
   const { user } = useAppSelector((state) => state.user);
@@ -76,7 +74,7 @@ const EditorInvitationStep = () => {
 
     dispatch(setIsLoading(true));
     try {
-      const response = await inviteEditors(emails);
+      const response = await createInvite(emails);
       if (response.success) {
         showMessage({
           type: "success",

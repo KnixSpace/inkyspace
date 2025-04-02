@@ -5,8 +5,7 @@ import { useAppSelector } from "@/redux/hooks";
 export default function ExplorePage() {
   const { user } = useAppSelector((state) => state.user);
 
-  // Check if user needs onboarding
-  const needsOnboarding = user && !user.onboardComplete;
+  const needsOnboarding = user && !user.onboardComplete && user.role !== "E";
 
   return (
     <div className="container mx-auto px-4 py-8">

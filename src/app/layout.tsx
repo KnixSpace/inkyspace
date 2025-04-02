@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Caveat } from "next/font/google";
 import "./globals.css";
-import MessageBox from "@/components/ui/MessageBox";
 import StoreProvider from "./StoreProvider";
-import Auth from "@/hoc/Auth";
+import ClientLayoutWrapper from "./ClientLayoutWrapper";
 
 const caveat = Caveat({
   weight: ["400", "500", "600", "700"],
@@ -20,13 +19,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <StoreProvider>
         <body className={`${caveat.className} antialiased`}>
-          <MessageBox />
-          {children}
+          <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
         </body>
       </StoreProvider>
     </html>

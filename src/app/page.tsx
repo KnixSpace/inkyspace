@@ -4,8 +4,6 @@ import CallToAction from "@/components/home/CallToAction";
 import FeaturedBlogs from "@/components/home/FeaturedBlogs";
 import Features from "@/components/home/Features";
 import Hero from "@/components/home/Hero";
-import Footer from "@/components/layout/Footer";
-import Navbar from "@/components/layout/Navbar";
 import ScrollTo from "@/components/layout/ScrollTo";
 import { useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
@@ -30,7 +28,6 @@ const page = (props: Props) => {
   return (
     <>
       <ScrollTo opacity={opacity} onClick={handleScrollToClick} />
-      <Navbar />
       <Hero />
       <div className="outerContainer" ref={containerRef}>
         <div className="innerContainer">
@@ -39,7 +36,6 @@ const page = (props: Props) => {
           <CallToAction />
         </div>
       </div>
-      <Footer />
     </>
   );
 };
