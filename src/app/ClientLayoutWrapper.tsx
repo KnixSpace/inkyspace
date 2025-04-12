@@ -24,7 +24,7 @@ function ClientLayout({ children }: { children: React.ReactNode }) {
       <AnimatePresence mode="wait">
         <motion.main
           key={pathname}
-          className={!isAuthPage ? "pt-16" : ""}
+          className={!isAuthPage ? "py-16" : ""}
           {...pageTransition}
         >
           {children}

@@ -16,7 +16,7 @@ export const fetchSuggestedSpaces = (tagsIds: string[]) =>
   apiRequest<
     {
       spaceId: string;
-      name: string;
+      title: string;
       image: string | null;
       description: string;
       ownerName: string;

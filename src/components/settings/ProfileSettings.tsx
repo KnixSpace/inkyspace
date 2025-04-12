@@ -4,18 +4,16 @@ import type React from "react";
 
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-  getUserProfile,
-  updateUserProfile,
-  type UserProfile,
-} from "@/lib/apis/user";
+import { updateUserProfile, type UserProfile } from "@/lib/apis/user";
 import { showMessage } from "@/components/ui/MessageBox";
 import { setUser } from "@/redux/features/userSlice";
-import { Loader2, Upload } from "lucide-react";
-import Image from "next/image";
+import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { slideUp, buttonHover, buttonTap, stagger } from "@/lib/animations";
 import { mapApiErrors } from "@/lib/apis/api";
+import { Controller, useForm } from "react-hook-form";
+import ImageUpload from "../ui/ImageUpload";
+import { uploadProfileImage } from "@/lib/cloudinary";
 
 const ProfileSettings = () => {
   const dispatch = useAppDispatch();
@@ -40,31 +38,22 @@ const ProfileSettings = () => {
     { id: "8", name: "Travel" },
   ]);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getUserProfile();
-        if (response.success && response.data) {
-          setProfile(response.data);
-        } else {
-          showMessage({
-            type: "error",
-            message: "Failed to load profile. Please try again.",
-          });
-        }
-      } catch (error) {
-        showMessage({
-          type: "error",
-          message: "An unexpected error occurred.",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { control } = useForm({ defaultValues: { avatar: profile.avatar } });
 
-    fetchProfile();
-  }, []);
+  useEffect(() => {
+    setIsLoading(true);
+    if (user && Object.keys(user).length > 0) {
+      setProfile((prev) => ({
+        ...prev,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar || "",
+        bio: user.bio || "",
+        subscribedTags: user.subscribedTags || [],
+      }));
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -107,6 +96,7 @@ const ProfileSettings = () => {
               ...user,
               name: profile.name,
               avatar: profile.avatar,
+              bio: profile.bio,
             })
           );
         }
@@ -151,41 +141,32 @@ const ProfileSettings = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col md:flex-row gap-8">
               <motion.div
-                className="md:w-1/3"
+                className="md:w-1/3 flex flex-col"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4 }}
               >
-                <div className="flex flex-col items-center">
-                  <motion.div
-                    className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-dashed border-gray-300 mb-4"
-                    whileHover={{ borderColor: "#a855f7", scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {profile.avatar ? (
-                      <Image
-                        src={profile.avatar || "/placeholder.svg"}
-                        alt={profile.name}
-                        fill
-                        className="object-cover"
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Profile Picture
+                </label>
+                <div className="grow">
+                  <Controller
+                    name="avatar"
+                    control={control}
+                    render={({ field }) => (
+                      <ImageUpload
+                        onImageChange={(url) => {
+                          setProfile((prev) => ({
+                            ...prev,
+                            avatar: url || "",
+                          }));
+                          field.onChange(url);
+                        }}
+                        initialImage={profile.avatar}
+                        uploadFunction={uploadProfileImage}
                       />
-                    ) : (
-                      <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                        <span className="text-4xl text-gray-400">
-                          {profile.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
                     )}
-                  </motion.div>
-                  <motion.button
-                    type="button"
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md text-gray-700 hover:bg-gray-200"
-                    whileHover={buttonHover}
-                    whileTap={buttonTap}
-                  >
-                    <Upload size={16} />
-                    <span>Upload Avatar</span>
-                  </motion.button>
+                  />
                 </div>
               </motion.div>
               <motion.div

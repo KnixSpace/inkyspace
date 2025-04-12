@@ -1,8 +1,9 @@
+"use client";
+
 import { setIsCompleted } from "@/redux/features/onboardingSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { showMessage } from "../ui/MessageBox";
 import { completeOnboarding } from "@/lib/apis/onboarding";
 
@@ -15,7 +16,7 @@ const CreateSpaceStep = () => {
       const response = await completeOnboarding();
       if (response.success) {
         dispatch(setIsCompleted(true));
-        router.push("/spaces/create");
+        router.push("/space/new");
       } else {
         showMessage({
           type: "error",
@@ -28,8 +29,6 @@ const CreateSpaceStep = () => {
         message: "An unexpected error occurred.",
       });
     }
-    dispatch(setIsCompleted(true));
-    router.push("/spaces/create");
   };
 
   return (

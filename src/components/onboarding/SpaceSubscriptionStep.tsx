@@ -28,7 +28,7 @@ import Image from "next/image";
 
 interface Space {
   spaceId: string;
-  name: string;
+  title: string;
   image: string | null;
   description: string;
   ownerName: string;
@@ -167,7 +167,7 @@ const SpaceSubscriptionStep = () => {
                 {space.image ? (
                   <Image
                     src={space.image || "/placeholder.svg?height=64&width=64"}
-                    alt={space.name}
+                    alt={space.title}
                     fill
                     className="object-cover"
                   />
@@ -178,7 +178,7 @@ const SpaceSubscriptionStep = () => {
                 )}
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-lg">{space.name}</h4>
+                <h4 className="font-semibold text-lg">{space.title}</h4>
                 <p className="text-gray-600 text-sm mb-2 line-clamp-2">
                   {space.description}
                 </p>

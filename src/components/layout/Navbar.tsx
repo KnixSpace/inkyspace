@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
     <motion.div
-      className="fixed z-20 top-0 left-0 w-full flex justify-center py-2 border-b-2 border-gray-300 border-dashed bg-white/90 backdrop-blur-md"
+      className="fixed z-20 top-0 left-0 w-full flex justify-center py-2 border-b-2 border-gray-300 border-dashed bg-white/10 backdrop-blur-md"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -33,7 +33,7 @@ const Navbar = () => {
               </Link>
               {user.role === "O" && (
                 <Link
-                  href="/spaces"
+                  href="/space"
                   className="text-lg hover:text-rose-400 transition-colors"
                 >
                   My Spaces

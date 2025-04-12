@@ -1,4 +1,3 @@
-import type React from "react";
 import Auth from "@/hoc/Auth";
 import SettingsSidebar from "@/components/settings/SettingsSidebar";
 import type { Metadata } from "next";
@@ -16,7 +15,7 @@ export default function SettingsLayout({
   return (
     <Auth>
       <div className="outerContainer">
-        <div className="innerContainer py-20">
+        <div className="innerContainer">
           <h1 className="text-3xl font-bold mb-6">Account Settings</h1>
           <div className="flex flex-col md:flex-row gap-8">
             <div className="md:w-1/4">

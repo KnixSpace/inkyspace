@@ -29,7 +29,7 @@ export const getPublicProfile = (userId: string) =>
     name: string;
     avatar?: string;
     bio?: string;
-    joinedDate: string;
+    createdOn: string;
     totalThreads: number;
     totalSpaces: number;
   }>(`/user/public-profile/${userId}`, "GET");

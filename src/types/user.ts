@@ -3,6 +3,7 @@ export interface User {
   avatar?: string;
   name: string;
   email: string;
+  bio?: string;
   role: "O" | "A" | "U" | "E";
   onboardComplete: boolean;
   subscribedTags?: string[];
