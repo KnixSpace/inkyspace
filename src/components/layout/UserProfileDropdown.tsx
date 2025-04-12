@@ -65,7 +65,7 @@ const UserProfileDropdown = () => {
     <div className="relative" ref={dropdownRef}>
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-4 focus:outline-none rounded-full cursor-pointer ${
+        className={`flex items-center gap-4 focus:outline-none rounded cursor-pointer ${
           isOpen ? "bg-purple-50" : "hover:bg-purple-50"
         }`}
         whileHover={buttonHover}
@@ -73,12 +73,11 @@ const UserProfileDropdown = () => {
       >
         <span className="hidden md:inline-block md:pl-4">{user.name}</span>
 
-        <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-dashed border-purple-500">
+        <div className="relative w-8 h-8 rounded overflow-hidden">
           {user.avatar ? (
-            <Image
+            <img
               src={user.avatar || "/placeholder.svg"}
               alt={user.name}
-              fill
               className="object-cover"
             />
           ) : (
