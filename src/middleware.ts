@@ -14,6 +14,7 @@ const settingsRotes = {
     "/settings/profile",
     "/settings/editor-management",
     "/settings/space-management",
+    "/settings/threads",
     "/settings/thread-approvals",
     "/settings/security",
   ],
@@ -31,12 +32,16 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookieSession = request.cookies.get("connect.sid");
 
-  if (pathname === "/explore") {
+  if (pathname === "/explore" || pathname.match(/\/(profile|space)\/(.*)/)) {
     return NextResponse.next();
   }
 
   if (pathname === "/auth" || pathname === "/auth/verify") {
     return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
+
+  if (pathname === "/space" || pathname === "/profile") {
+    return NextResponse.redirect(new URL("/explore", request.url));
   }
 
   if (cookieSession) {
@@ -98,5 +103,12 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/auth/:path*", "/explore", "/settings/:path*"],
+  matcher: [
+    "/",
+    "/auth/:path*",
+    "/explore",
+    "/settings/:path*",
+    "/space/:path",
+    "/profile/:path",
+  ],
 };

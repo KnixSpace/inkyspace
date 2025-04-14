@@ -91,6 +91,15 @@ const SettingsSidebar = () => {
             </motion.div>
             <motion.div variants={stagger.item}>
               <Link
+                href="/settings/threads"
+                className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${isActive("/threads")}`}
+              >
+                <FileText size={18} />
+                <span>My Threads</span>
+              </Link>
+            </motion.div>
+            <motion.div variants={stagger.item}>
+              <Link
                 href="/settings/thread-approvals"
                 className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${isActive(
                   "/thread-approvals"
