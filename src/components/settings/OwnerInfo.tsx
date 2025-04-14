@@ -7,6 +7,7 @@ import {
   Mail,
   Calendar,
   UserCircle2,
+  SquareArrowOutUpRight,
 } from "lucide-react";
 import Image from "next/image";
 import { format } from "date-fns";
@@ -14,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { slideUp, stagger } from "@/lib/animations";
 import { getOwnerInfo, OwnerDetails } from "@/lib/apis/user";
 import { mapApiErrors } from "@/lib/apis/api";
+import Link from "next/link";
 
 const OwnerInfo = () => {
   const [owner, setOwner] = useState<OwnerDetails | null>(null);
@@ -24,7 +26,6 @@ const OwnerInfo = () => {
       setIsLoading(true);
       try {
         const response = await getOwnerInfo();
-        console.log(response);
         if (response.success && response.data) {
           setOwner({
             userId: response.data?.userId,
@@ -87,12 +88,11 @@ const OwnerInfo = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
             >
-              <div className="relative w-40 h-40 rounded-full overflow-hidden border-2 border-dashed border-gray-300 mb-4">
+              <div className="relative w-40 h-40 rounded-md overflow-hidden border-2 border-dashed border-gray-300 mb-4">
                 {owner.avatar ? (
-                  <Image
+                  <img
                     src={owner.avatar || "/placeholder.svg"}
                     alt={owner.name}
-                    fill
                     className="object-cover"
                   />
                 ) : (
@@ -121,6 +121,11 @@ const OwnerInfo = () => {
                 <h3 className="text-lg font-semibold mb-2">
                   Contact Information
                 </h3>
+
+                <Link href={`/profile/${owner.userId}`} className="flex items-center gap-2 hover:text-purple-600 cursor-pointer">
+                  <SquareArrowOutUpRight className="text-gray-400" size={18} />
+                  <span>{owner.name}'s Profile</span>
+                </Link>
 
                 <div className="flex items-center gap-2">
                   <Mail className="text-gray-400" size={18} />

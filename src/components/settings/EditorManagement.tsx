@@ -45,7 +45,6 @@ const EditorManagement = () => {
       if (activeTab === "editors") {
         const response = await getEditors();
         if (response.success && response.data) {
-          console.log(response.data);
           setEditors(response.data);
         } else {
           showMessage({
