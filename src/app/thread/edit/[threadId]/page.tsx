@@ -6,7 +6,7 @@ import { getThreadDataForEdit } from "@/lib/apis/thread";
 import { showMessage } from "@/components/ui/MessageBox";
 import { useAppSelector } from "@/redux/hooks";
 import ThreadForm from "@/components/thread/ThreadForm";
-import type { Thread } from "@/types/thread";
+import type { ThreadDetails } from "@/types/thread";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { buttonHover, buttonTap, slideUp } from "@/lib/animations";
@@ -18,7 +18,7 @@ const ThreadEditPage = () => {
   const { threadId } = useParams() as { threadId: string };
   const { user } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
-  const [thread, setThread] = useState<Thread | null>(null);
+  const [thread, setThread] = useState<ThreadDetails | null>(null);
   const [availableSpaces, setAvailableSpaces] = useState<
     { spaceId: string; title: string }[]
   >([]);
@@ -72,8 +72,8 @@ const ThreadEditPage = () => {
     if (user.role !== "E") return false;
 
     return (
-      ["D", "R", "A"].includes(thread.status) ||
-      (thread.status === "P" && thread.authorId === user.userId)
+      ["D", "R", "A", "P"].includes(thread.status) &&
+      thread.editorId === user.userId
     );
   };
 

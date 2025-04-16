@@ -20,7 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { slideUp, buttonHover, buttonTap, stagger } from "@/lib/animations";
 import { useAppSelector } from "@/redux/hooks";
 import { mapApiErrors } from "@/lib/apis/api";
-import { Thread } from "@/types/thread";
+import { Thread, ThreadDetails } from "@/types/thread";
 
 const statusColors = {
   D: "bg-gray-100 text-gray-700",
@@ -38,7 +38,7 @@ const statusLabels = {
 
 const MyThreads = () => {
   const { user } = useAppSelector((state) => state.user);
-  const [threads, setThreads] = useState<Thread[]>([]);
+  const [threads, setThreads] = useState<ThreadDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [actionInProgress, setActionInProgress] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<
@@ -312,7 +312,7 @@ const MyThreads = () => {
                       </div>
                       <div className="flex items-center text-xs text-gray-500 gap-4 mb-2">
                         <span className="py-0.5 px-1.5 rounded bg-purple-100 text-purple-500">
-                          {thread.spaceTitle}
+                          {thread.spaceDetails.title}
                         </span>
                         <div className="flex items-center">
                           <Calendar size={14} className="mr-1" />
@@ -325,21 +325,28 @@ const MyThreads = () => {
                       </div>
                       {user?.role === "O" && (
                         <div className="flex items-center text-sm text-gray-500 gap-2">
-                          {thread.editorAvatar ? (
+                          {thread.editorDetails.avatar ? (
                             <div className="relative w-6 h-6 rounded overflow-hidden flex-shrink-0 mr-2">
                               <img
-                                src={thread.editorAvatar || "/placeholder.svg"}
-                                alt={thread.editorName}
+                                src={
+                                  thread.editorDetails.avatar ||
+                                  "/placeholder.svg"
+                                }
+                                alt={thread.editorDetails.name}
                                 className="object-cover w-full h-full"
                                 loading="lazy"
                               />
                             </div>
                           ) : (
                             <div className="w-6 h-6 rounded bg-gray-100 flex justify-center items-center">
-                              {thread.editorName.charAt(0).toUpperCase()}
+                              {thread.editorDetails.name
+                                .charAt(0)
+                                .toUpperCase()}
                             </div>
                           )}
-                          <span className="mr-3">{thread.editorName}</span>
+                          <span className="mr-3">
+                            {thread.editorDetails.name}
+                          </span>
                         </div>
                       )}
 
@@ -353,18 +360,6 @@ const MyThreads = () => {
                   </div>
 
                   <div className="flex justify-end gap-2 mt-4">
-                    {thread.status === "P" && (
-                      <Link href={`/thread/view/${thread.threadId}`}>
-                        <motion.button
-                          className="px-3 py-1 rounded-md text-sm font-medium flex items-center justify-center bg-gray-100 text-gray-700 hover:bg-gray-200"
-                          whileHover={buttonHover}
-                          whileTap={buttonTap}
-                        >
-                          <Eye size={14} className="mr-1" /> View
-                        </motion.button>
-                      </Link>
-                    )}
-
                     {isEditor && (
                       <>
                         {thread.status === "D" && (
@@ -417,6 +412,28 @@ const MyThreads = () => {
                           </motion.button>
                         </Link>
                       </>
+                    )}
+
+                    {thread.status !== "P" ? (
+                      <Link href={`/thread/preview/${thread.threadId}`}>
+                        <motion.button
+                          className="px-3 py-1 rounded-md text-sm font-medium flex items-center justify-center bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          whileHover={buttonHover}
+                          whileTap={buttonTap}
+                        >
+                          <Eye size={14} className="mr-1" /> Preview
+                        </motion.button>
+                      </Link>
+                    ) : (
+                      <Link href={`/thread/view/${thread.threadId}`}>
+                        <motion.button
+                          className="px-3 py-1 rounded-md text-sm font-medium flex items-center justify-center bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          whileHover={buttonHover}
+                          whileTap={buttonTap}
+                        >
+                          <Eye size={14} className="mr-1" /> View
+                        </motion.button>
+                      </Link>
                     )}
 
                     {(user?.role === "O" || user?.role === "E") && (

@@ -1,5 +1,14 @@
 import { apiRequest } from "./api";
-import type { Thread, ThreadFormData, ThreadUpdateData } from "@/types/thread";
+import type {
+  ThreadDetails,
+  ThreadFormData,
+  ThreadUpdateData,
+} from "@/types/thread";
+import type {
+  CommentList,
+  CommentReplyList,
+  ThreadInteraction,
+} from "@/types/comment";
 
 export const createThread = (
   data: ThreadFormData & {
@@ -12,7 +21,13 @@ export const updateThread = (
     content: string;
   }
 ) =>
-  apiRequest<Thread>(`/thread/update/${data.threadId}`, "PUT", data, {}, true);
+  apiRequest<ThreadDetails>(
+    `/thread/update/${data.threadId}`,
+    "PUT",
+    data,
+    {},
+    true
+  );
 
 export const deleteThread = (threadId: string) =>
   apiRequest(`/thread/delete/${threadId}`, "DELETE", undefined, {}, true);
@@ -44,17 +59,29 @@ export const publishThread = (threadId: string) =>
 export const toggleThreadInteraction = (
   type: "like" | "unlike",
   threadId: string
-) => apiRequest(`/thread/${threadId}?${type}`, "POST", undefined, {}, true);
-
-export const commentOnThread = (
-  threadId: string,
-  comment: string,
-  parentId?: string
 ) =>
   apiRequest(
+    `/thread/interact/${threadId}?interaction=${type}`,
+    "POST",
+    undefined,
+    {},
+    true
+  );
+
+export const getThreadInteractions = (threadId: string) =>
+  apiRequest<ThreadInteraction>(
+    `/thread/stats/interactions/${threadId}`,
+    "GET",
+    undefined,
+    {},
+    true
+  );
+
+export const commentOnThread = (threadId: string, comment: string) =>
+  apiRequest<{ commentId: string }>(
     `/thread/comment/${threadId}`,
     "POST",
-    { comment, parentId },
+    { comment },
     {},
     true
   );
@@ -64,13 +91,38 @@ export const replyToComment = (
   parentId: string,
   reply: string
 ) =>
-  apiRequest(
-    `/thread/comment/reply/${threadId}/?${parentId}`,
+  apiRequest<{ replyId: string }>(
+    `/thread/comment/reply/${threadId}/?parentId=${parentId}`,
     "POST",
     { reply },
     {},
     true
   );
+
+export const getThreadComments = (
+  threadId: string,
+  pageSize = 5,
+  nextPagetoken?: string
+) => {
+  const url = nextPagetoken
+    ? `/thread/list/comments/${threadId}?pageSize=${pageSize}&nextPagetoken=${nextPagetoken}`
+    : `/thread/list/comments/${threadId}?pageSize=${pageSize}`;
+
+  return apiRequest<CommentList>(url, "GET");
+};
+
+export const getCommentReplies = (
+  commentId: string,
+  threadId: string,
+  pageSize = 5,
+  nextPagetoken?: string
+) => {
+  const url = nextPagetoken
+    ? `/thread/list/comment/replies/${threadId}?parentId=${commentId}&pageSize=${pageSize}&nextPagetoken=${nextPagetoken}`
+    : `/thread/list/comment/replies/${threadId}?parentId=${commentId}&pageSize=${pageSize}`;
+
+  return apiRequest<CommentReplyList>(url, "GET");
+};
 
 export const deleteComment = (commentId: string) =>
   apiRequest(`/thread/comment/${commentId}`, "DELETE", undefined, {}, true);
@@ -78,11 +130,20 @@ export const deleteComment = (commentId: string) =>
 export const deleteReply = (replyId: string) =>
   apiRequest(`/thread/comment/${replyId}`, "DELETE", undefined, {}, true);
 
+export const getThread = (threadId: string) =>
+  apiRequest<ThreadDetails>(`/thread/details/${threadId}`, "GET");
+
 export const getMyThreads = () =>
-  apiRequest<Thread[]>(`/thread/list/my-threads`, "GET", undefined, {}, true);
+  apiRequest<ThreadDetails[]>(
+    `/thread/list/my-threads`,
+    "GET",
+    undefined,
+    {},
+    true
+  );
 
 export const getPendingThreads = () =>
-  apiRequest<Thread[]>(
+  apiRequest<ThreadDetails[]>(
     `/thread/list/pending-approval`,
     "GET",
     undefined,
@@ -91,8 +152,17 @@ export const getPendingThreads = () =>
   );
 
 export const getThreadDataForEdit = (threadId: string) =>
-  apiRequest<Thread>(
+  apiRequest<ThreadDetails>(
     `/thread/details/edit/${threadId}`,
+    "GET",
+    undefined,
+    {},
+    true
+  );
+
+export const getThreadDataForPreview = (threadId: string) =>
+  apiRequest<ThreadDetails>(
+    `/thread/details/preview/${threadId}`,
     "GET",
     undefined,
     {},

@@ -1,28 +1,6 @@
 import { Tag } from "@/components/ui/form/TagInput";
-import { OutputData } from "@editorjs/editorjs";
 
 export type ThreadStatus = "D" | "P" | "R" | "A";
-
-export interface Thread {
-  threadId: string;
-  title: string;
-  coverImage?: string;
-  content: OutputData | null;
-  tags: Tag[];
-  editorId: string;
-  editorName: string;
-  editorAvatar?: string;
-  ownerId: string;
-  ownerName: string;
-  ownerAvatar?: string;
-  spaceId: string;
-  spaceTitle: string;
-  status: ThreadStatus;
-  createdOn: string;
-  updatedOn: string;
-  publishedOn?: string;
-  rejectionReason?: string;
-}
 
 export interface ThreadFormData {
   title: string;
@@ -36,12 +14,6 @@ export interface ThreadUpdateData extends ThreadFormData {
   status?: ThreadStatus;
 }
 
-export interface ThreadStatusUpdateData {
-  threadId: string;
-  status: ThreadStatus;
-  rejectionReason?: string;
-}
-
 export interface ThreadDraftData {
   spaceId?: string;
   title?: string;
@@ -50,4 +22,34 @@ export interface ThreadDraftData {
   tags?: Tag[];
   status?: ThreadStatus;
   rejectionReason?: string;
+}
+
+export interface ThreadDetails {
+  threadId: string;
+  spaceId: string;
+  ownerId: string;
+  editorId: string;
+  title: string;
+  content: string;
+  coverImage?: string;
+  tags: Tag[];
+  status: ThreadStatus;
+  createdOn: string;
+  updatedOn: string;
+  publishedOn?: string;
+  rejectionReason?: string;
+  ownerDetails: {
+    name: string;
+    avatar?: string;
+  };
+  editorDetails: {
+    name: string;
+    avatar?: string;
+  };
+  spaceDetails: {
+    title: string;
+    coverImage?: string;
+  };
+  subscribersCount: number;
+  interactionsCount: number;
 }

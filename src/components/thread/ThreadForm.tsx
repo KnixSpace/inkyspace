@@ -110,6 +110,7 @@ const ThreadForm = ({
   };
 
   const saveAsDraft = async (data: ThreadFormData) => {
+    console.log("Saving as draft", data);
     if (!validateEditorContent(editorData)) return;
 
     setIsSaving(true);
