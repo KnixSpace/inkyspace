@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 
 interface EditorProps {
   data?: OutputData | null;
-  onChange: (data: OutputData) => void;
+  onChange?: (data: OutputData) => void;
   readOnly?: boolean;
   placeholder?: string;
 }
