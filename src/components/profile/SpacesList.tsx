@@ -1,12 +1,12 @@
 "use client";
 
-import type { OwnedSpaces, Space } from "@/lib/apis/space";
 import { Users, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { stagger, cardHover } from "@/lib/animations";
+import { OwnedSpaces } from "@/types/space";
 
 interface SpacesListProps {
   spaces: OwnedSpaces[];

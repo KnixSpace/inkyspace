@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { getPublicProfile } from "@/lib/apis/user";
-import { getOwnedSpacesWithSubscribers, OwnedSpaces } from "@/lib/apis/space";
-import { getOwnerThreads } from "@/lib/apis/thread";
+import {
+  getOwnedSpacesWithSubscribers,
+  getOwnedSpaces,
+} from "@/lib/apis/space";
+// import {  } from "@/lib/apis/thread";
 import { showMessage } from "@/components/ui/MessageBox";
 import {
   Loader2,
@@ -20,6 +23,8 @@ import ThreadsList from "./ThreadsList";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, slideUp, buttonHover, buttonTap } from "@/lib/animations";
 import { mapApiErrors } from "@/lib/apis/api";
+import { OwnedSpaces } from "@/types/space";
+import { getOwnersThreads } from "@/lib/apis/thread";
 
 interface PublicProfileProps {
   ownerId: string;
@@ -59,7 +64,7 @@ const PublicProfile = ({ ownerId }: PublicProfileProps) => {
         }
 
         // Fetch threads
-        const threadsResponse = await getOwnerThreads(ownerId);
+        const threadsResponse = await getOwnersThreads(ownerId);
         if (threadsResponse.success && threadsResponse.data) {
           setThreads(threadsResponse.data);
         }

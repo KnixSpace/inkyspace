@@ -53,3 +53,14 @@ export interface ThreadDetails {
   subscribersCount: number;
   interactionsCount: number;
 }
+
+export interface ThreadPreview {
+  threadId: string;
+  title: string;
+  excerpt: string;
+  coverImage?: string;
+  tags: Tag[];
+  publishedOn: string;
+  editorName: string;
+  editorAvatar?: string;
+}

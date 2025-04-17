@@ -33,7 +33,7 @@ const Navbar = () => {
               </Link>
               {user.role === "O" && (
                 <Link
-                  href="/space"
+                  href="/settings/space-management"
                   className="text-lg hover:text-rose-400 transition-colors"
                 >
                   My Spaces

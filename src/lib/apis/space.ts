@@ -1,46 +1,13 @@
+import {
+  OwnedSpaces,
+  Space,
+  SpaceSubscribersResponse,
+  SpaceThreadsResponse,
+  SubscribedSpace,
+  UpdateSpaceData,
+} from "@/types/space";
 import { apiRequest } from "./api";
-
-export interface Space {
-  spaceId: string;
-  title: string;
-  description: string;
-  coverImage?: string;
-  ownerId: string;
-  ownerName: string;
-  ownerAvatar?: string;
-  subscribers: number;
-  isPrivate: boolean;
-  createdOn: Date;
-}
-
-export interface OwnedSpaces {
-  spaceId: string;
-  title: string;
-  description: string;
-  coverImage?: string;
-  isPrivate: boolean;
-  subscribers: number;
-  createdOn: Date;
-}
-
-export interface SubscribedSpace extends Space {
-  isNewsletter: boolean;
-}
-
-export interface CreateSpaceData {
-  title: string;
-  description: string;
-  coverImage?: string;
-  isPrivate: boolean;
-}
-
-export interface UpdateSpaceData {
-  spaceId: string;
-  title: string;
-  description: string;
-  coverImage?: string;
-  isPrivate: boolean;
-}
+import { Tag } from "@/components/ui/form/TagInput";
 
 export const getSubscribedSpaces = () =>
   apiRequest<SubscribedSpace[]>(
@@ -54,14 +21,11 @@ export const getSubscribedSpaces = () =>
 export const unsubscribeFromSpace = (spaceId: string) =>
   apiRequest("/space/unsubscribe", "POST", { spaceId }, {}, true);
 
+export const subscribeToSpace = (spaceId: string) =>
+  apiRequest(`/space/subscribe/${spaceId}`, "POST", {}, {}, true);
+
 export const toggleNewsletter = (spaceId: string, enable: boolean) =>
   apiRequest("/space/newsletter/toggle", "POST", { spaceId, enable }, {}, true);
-
-export const getOwnerSpacesName = (ownerId: string) =>
-  apiRequest<{ spaceId: string; title: string }[]>(
-    `/space/list/owned-names/${ownerId}`,
-    "GET"
-  );
 
 export const getOwnedSpaces = (ownerId: string) =>
   apiRequest<OwnedSpaces[]>(
@@ -72,6 +36,12 @@ export const getOwnedSpaces = (ownerId: string) =>
 export const getOwnedSpacesWithSubscribers = (ownerId: string) =>
   apiRequest<OwnedSpaces[]>(
     `/space/list/owned-with-subscribers/${ownerId}`,
+    "GET"
+  );
+
+export const getOwnerSpacesName = (ownerId: string) =>
+  apiRequest<{ spaceId: string; title: string }[]>(
+    `/space/list/names/${ownerId}`,
     "GET"
   );
 
@@ -90,3 +60,36 @@ export const deleteSpace = (spaceId: string) =>
 
 export const getSpaceById = (spaceId: string) =>
   apiRequest<Space>(`/space/${spaceId}`, "GET");
+
+export const getSpaceThreads = (
+  spaceId: string,
+  pageSize = 5,
+  nextPagetoken?: string
+) => {
+  const url = nextPagetoken
+    ? `/space/list/threads/${spaceId}?pageSize=${pageSize}&nextPagetoken=${nextPagetoken}`
+    : `/space/list/threads/${spaceId}?pageSize=${pageSize}`;
+
+  return apiRequest<SpaceThreadsResponse>(url, "GET");
+};
+
+export const getSpaceSubscriptionStatus = (spaceId: string) =>
+  apiRequest<{
+    isSubscribed: boolean;
+    isNewsletter: boolean;
+  }>(`/space/subscription/status/${spaceId}`, "GET", undefined, {}, true);
+
+export const getSpaceSubscribers = (
+  spaceId: string,
+  pageSize = 10,
+  nextPagetoken?: string
+) => {
+  const url = nextPagetoken
+    ? `/space/stats/subscribers/${spaceId}?pageSize=${pageSize}&nextPagetoken=${nextPagetoken}`
+    : `/space/stats/subscribers/${spaceId}?pageSize=${pageSize}`;
+
+  return apiRequest<SpaceSubscribersResponse>(url, "GET", undefined, {}, true);
+};
+
+export const getAvailableTags = () =>
+  apiRequest<Tag[]>("/tags/list", "GET", undefined, {}, true);

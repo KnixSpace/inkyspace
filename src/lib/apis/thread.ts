@@ -133,6 +133,9 @@ export const deleteReply = (replyId: string) =>
 export const getThread = (threadId: string) =>
   apiRequest<ThreadDetails>(`/thread/details/${threadId}`, "GET");
 
+export const getOwnersThreads = (ownerId: string) =>
+  apiRequest<ThreadDetails[]>(`/thread/list/owner/${ownerId}`, "GET");
+
 export const getMyThreads = () =>
   apiRequest<ThreadDetails[]>(
     `/thread/list/my-threads`,
