@@ -64,3 +64,8 @@ export interface ThreadPreview {
   editorName: string;
   editorAvatar?: string;
 }
+
+export interface ThreadListResponse {
+  list: ThreadDetails[];
+  nextPagetoken?: string;
+}

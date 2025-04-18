@@ -2,6 +2,7 @@ import { apiRequest } from "./api";
 import type {
   ThreadDetails,
   ThreadFormData,
+  ThreadListResponse,
   ThreadUpdateData,
 } from "@/types/thread";
 import type {
@@ -171,3 +172,15 @@ export const getThreadDataForPreview = (threadId: string) =>
     {},
     true
   );
+
+export const getFeaturedThreads = (
+  listing = "TRENDING",
+  pageSize = 10,
+  nextPagetoken?: string
+) => {
+  const url = nextPagetoken
+    ? `/thread/list/featured/?listing=${listing}&pageSize=${pageSize}&nextPagetoken=${nextPagetoken}`
+    : `/thread/list/featured/?listing=${listing}&pageSize=${pageSize}`;
+
+  return apiRequest<ThreadListResponse>(url, "GET");
+};

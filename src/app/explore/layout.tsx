@@ -10,7 +10,9 @@ export const metadata: Metadata = {
 export default function ExploreLayout({ children }: { children: ReactNode }) {
   return (
     <Auth>
-      <main className="min-h-screen bg-gray-50">{children}</main>
+      <div className="outerContainer">
+        <div className="innerContainer">{children}</div>
+      </div>
     </Auth>
   );
 }
