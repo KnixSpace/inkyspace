@@ -5,7 +5,6 @@ import {
   getSubscribedSpaces,
   unsubscribeFromSpace,
   toggleNewsletter,
-  type SubscribedSpace,
 } from "@/lib/apis/space";
 import { showMessage } from "@/components/ui/MessageBox";
 import { Loader2, Bell, BellOff, Trash2, ImageIcon } from "lucide-react";
@@ -13,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { slideUp, buttonHover, buttonTap, stagger } from "@/lib/animations";
+import { SubscribedSpace } from "@/types/space";
 
 const SubscribedSpaces = () => {
   const [spaces, setSpaces] = useState<SubscribedSpace[]>([]);
@@ -77,7 +77,7 @@ const SubscribedSpaces = () => {
   ) => {
     setActionInProgress(spaceId);
     try {
-      const response = await toggleNewsletter(spaceId, !currentStatus);
+      const response = await toggleNewsletter(spaceId);
       if (response.success) {
         setSpaces(
           spaces.map((space) =>
@@ -172,10 +172,10 @@ const SubscribedSpaces = () => {
                   }}
                 >
                   <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                    {space.image ? (
+                    {space.coverImage ? (
                       <Image
-                        src={space.image || "/placeholder.svg"}
-                        alt={space.name}
+                        src={space.coverImage || "/placeholder.svg"}
+                        alt={space.title}
                         fill
                         className="object-cover"
                       />
@@ -186,7 +186,7 @@ const SubscribedSpaces = () => {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-lg">{space.name}</h3>
+                    <h3 className="font-semibold text-lg">{space.title}</h3>
                     <p className="text-gray-600 text-sm line-clamp-2">
                       {space.description}
                     </p>
@@ -197,7 +197,10 @@ const SubscribedSpaces = () => {
                   <div className="flex flex-col gap-2">
                     <motion.button
                       onClick={() =>
-                        handleToggleNewsletter(space.spaceId, space.isNewsletter)
+                        handleToggleNewsletter(
+                          space.spaceId,
+                          space.isNewsletter
+                        )
                       }
                       disabled={actionInProgress === space.spaceId}
                       className={`px-3 py-1 rounded-md text-sm font-medium flex items-center justify-center ${
@@ -244,8 +247,16 @@ const SubscribedSpaces = () => {
                       onClick={() => handleUnsubscribe(space.spaceId)}
                       disabled={actionInProgress === space.spaceId}
                       className="px-3 py-1 rounded-md text-sm font-medium flex items-center justify-center bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      whileHover={actionInProgress !== space.spaceId ? buttonHover : undefined}
-                      whileTap={actionInProgress !== space.spaceId ? buttonTap : undefined}
+                      whileHover={
+                        actionInProgress !== space.spaceId
+                          ? buttonHover
+                          : undefined
+                      }
+                      whileTap={
+                        actionInProgress !== space.spaceId
+                          ? buttonTap
+                          : undefined
+                      }
                     >
                       {actionInProgress === space.spaceId ? (
                         <motion.div

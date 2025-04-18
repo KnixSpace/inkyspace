@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface OnboardingState {
   currentStep: number;
-  selectedTags: string[];
+  selectedTags: { name: string; id: string }[];
   subscribedSpaces: { spaceId: string; isNewsletter: boolean }[];
   isCompleted: boolean;
   isLoading: boolean;
@@ -23,7 +23,10 @@ const onboardingSlice = createSlice({
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.currentStep = action.payload;
     },
-    setSelectedTags: (state, action: PayloadAction<string[]>) => {
+    setSelectedTags: (
+      state,
+      action: PayloadAction<{ id: string; name: string }[]>
+    ) => {
       state.selectedTags = action.payload;
     },
 

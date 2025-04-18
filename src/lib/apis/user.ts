@@ -1,3 +1,4 @@
+import { Tag } from "@/components/ui/form/TagInput";
 import { apiRequest } from "./api";
 
 export interface UserProfile {
@@ -5,7 +6,7 @@ export interface UserProfile {
   email: string;
   avatar?: string;
   bio?: string;
-  subscribedTags?: string[];
+  subscribedTags?: Tag[] | null;
 }
 
 export interface OwnerDetails {

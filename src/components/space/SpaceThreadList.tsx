@@ -137,9 +137,9 @@ const SpaceThreadList = ({ spaceId }: SpaceThreadListProps) => {
                       {thread.tags.map((tag) => (
                         <div
                           key={tag.id}
-                          className="flex items-center px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
+                          className="flex items-center px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs"
                         >
-                          <Tag size={12} className="mr-1" />
+                          {/* <Tag size={12} className="mr-1" /> */}
                           <span>{tag.name}</span>
                         </div>
                       ))}
@@ -152,10 +152,10 @@ const SpaceThreadList = ({ spaceId }: SpaceThreadListProps) => {
                           {format(new Date(thread.publishedOn), "MMM d, yyyy")}
                         </span>
                       </div>
-                      <div className="flex items-center">
+                      {/* <div className="flex items-center">
                         <User size={12} className="mr-1" />
                         <span>{thread.editorName}</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

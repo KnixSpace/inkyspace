@@ -33,6 +33,7 @@ const CreateThreadPage = () => {
       setIsLoading(true);
       try {
         const spacesResponse = await getOwnerSpacesName(user?.ownerId || "");
+        console.log("spacesResponse", spacesResponse);
         if (spacesResponse.success && spacesResponse.data) {
           setAvailableSpaces(spacesResponse.data);
         }

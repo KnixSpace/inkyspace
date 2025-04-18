@@ -24,8 +24,8 @@ export const unsubscribeFromSpace = (spaceId: string) =>
 export const subscribeToSpace = (spaceId: string) =>
   apiRequest(`/space/subscribe/${spaceId}`, "POST", {}, {}, true);
 
-export const toggleNewsletter = (spaceId: string, enable: boolean) =>
-  apiRequest("/space/newsletter/toggle", "POST", { spaceId, enable }, {}, true);
+export const toggleNewsletter = (spaceId: string) =>
+  apiRequest(`/space/newsletter/${spaceId}`, "POST", {}, {}, true);
 
 export const getOwnedSpaces = (ownerId: string) =>
   apiRequest<OwnedSpaces[]>(
@@ -41,7 +41,7 @@ export const getOwnedSpacesWithSubscribers = (ownerId: string) =>
 
 export const getOwnerSpacesName = (ownerId: string) =>
   apiRequest<{ spaceId: string; title: string }[]>(
-    `/space/list/names/${ownerId}`,
+    `/space/list/owned-names/${ownerId}`,
     "GET"
   );
 

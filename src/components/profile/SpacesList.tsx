@@ -41,7 +41,7 @@ const SpacesList = ({ spaces }: SpacesListProps) => {
         >
           <Link
             href={`/space/view/${space.spaceId}`}
-            className="block bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden transition-shadow"
+            className="block bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden transition-shadow w-full h-full"
           >
             <div className="relative h-40 w-full bg-gray-100">
               {space.coverImage ? (
@@ -57,18 +57,22 @@ const SpacesList = ({ spaces }: SpacesListProps) => {
                 </div>
               )}
             </div>
-            <div className="p-4">
-              <h3 className="font-semibold text-lg mb-1">{space.title}</h3>
-              <p className="text-gray-600 text-sm line-clamp-2 mb-3">
-                {space.description}
-              </p>
-              <div className="flex justify-between items-center text-xs text-gray-500">
-                <span>
-                  Created {format(new Date(space.createdOn), "MMM d, yyyy")}
-                </span>
-                <div className="flex items-center">
-                  <Users size={14} className="mr-1" />
-                  <span>{space.subscribers} subscribers</span>
+            <div className="p-4 flex flex-col justify-between">
+              <div>
+                <h3 className="font-semibold text-lg mb-1">{space.title}</h3>
+                <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                  {space.description}
+                </p>
+              </div>
+              <div>
+                <div className="flex justify-between items-center text-xs text-gray-500">
+                  <span>
+                    Created {format(new Date(space.createdOn), "MMM d, yyyy")}
+                  </span>
+                  <div className="flex items-center">
+                    <Users size={14} className="mr-1" />
+                    <span>{space.subscribers} subscribers</span>
+                  </div>
                 </div>
               </div>
             </div>

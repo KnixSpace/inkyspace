@@ -1,11 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  getOwnedSpaces,
-  deleteSpace,
-  OwnedSpaces,
-} from "@/lib/apis/space";
+import { getOwnedSpaces, deleteSpace } from "@/lib/apis/space";
 import { showMessage } from "@/components/ui/MessageBox";
 import { Loader2, Plus, Trash2, ImageIcon, Edit, Eye } from "lucide-react";
 import Link from "next/link";
@@ -13,6 +9,7 @@ import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import { slideUp, buttonHover, buttonTap, stagger } from "@/lib/animations";
 import { useAppSelector } from "@/redux/hooks";
+import { OwnedSpaces } from "@/types/space";
 
 const SpaceManagement = () => {
   const [spaces, setSpaces] = useState<OwnedSpaces[]>([]);
@@ -189,7 +186,7 @@ const SpaceManagement = () => {
                       {space.isPrivate && (
                         <>
                           <span className="mx-2">•</span>
-                          <span className="text-purple-600">Private</span>
+                          <span className="text-rose-500 py-1 px-2 rounded bg-rose-100">Private</span>
                         </>
                       )}
                     </div>

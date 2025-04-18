@@ -13,6 +13,8 @@ import { showMessage } from "@/components/ui/MessageBox";
 import { useAppSelector } from "@/redux/hooks";
 
 interface SpaceSubscriptionControlsProps {
+  isOwner: boolean;
+  isEditor: boolean;
   spaceId: string;
   isSubscribed: boolean;
   isNewsletter: boolean;
@@ -20,6 +22,8 @@ interface SpaceSubscriptionControlsProps {
 }
 
 const SpaceSubscriptionControls = ({
+  isOwner,
+  isEditor,
   spaceId,
   isSubscribed,
   isNewsletter,
@@ -90,7 +94,7 @@ const SpaceSubscriptionControls = ({
 
     setIsNewsletterLoading(true);
     try {
-      const response = await toggleNewsletter(spaceId, !isNewsletter);
+      const response = await toggleNewsletter(spaceId);
       if (response.success) {
         onSubscriptionChange(isSubscribed, !isNewsletter);
         showMessage({
@@ -113,7 +117,7 @@ const SpaceSubscriptionControls = ({
     }
   };
 
-  if (!user || user.role === "O" || user.role === "E") return null;
+  if (isOwner || isEditor) return null;
 
   return (
     <div className="flex flex-col sm:flex-row gap-3 mt-4">

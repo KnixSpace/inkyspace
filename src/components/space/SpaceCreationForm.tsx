@@ -1,6 +1,6 @@
 "use client";
 
-import { createSpace, CreateSpaceData } from "@/lib/apis/space";
+import { createSpace } from "@/lib/apis/space";
 import { spaceSchema } from "@/lib/validations/space";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import { ArrowLeft, Loader2, Plus } from "lucide-react";
 import ImageUpload from "../ui/ImageUpload";
 import { useRouter } from "next/navigation";
 import { uploadSpaceCoverImage } from "@/lib/cloudinary";
+import { CreateSpaceData } from "@/types/space";
 
 type SpaceFormData = {
   title: string;

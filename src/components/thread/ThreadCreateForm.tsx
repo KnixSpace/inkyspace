@@ -15,7 +15,7 @@ import ImageUpload from "@/components/ui/ImageUpload";
 import { buttonHover, buttonTap } from "@/lib/animations";
 import { uploadSpaceCoverImage } from "@/lib/cloudinary";
 import { threadSchema } from "@/lib/validations/thread";
-import { createThread, submitThreadForApproval } from "@/lib/apis/thread";
+import { createThread, sendForApproval } from "@/lib/apis/thread";
 import { showMessage } from "@/components/ui/MessageBox";
 import { ThreadFormData } from "@/types/thread";
 import TagInput, { Tag } from "../ui/form/TagInput";
@@ -135,7 +135,7 @@ const ThreadCreateForm = ({ availableSpaces }: ThreadFormProps) => {
 
       if (createResponse.success && createResponse.data) {
         // Then submit it for approval
-        const submitResponse = await submitThreadForApproval(
+        const submitResponse = await sendForApproval(
           createResponse.data.threadId
         );
         if (submitResponse.success) {

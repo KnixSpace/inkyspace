@@ -48,14 +48,23 @@ const SpaceView = ({ spaceId }: SpaceViewProps) => {
 
   // Check access rights based on rules
   const checkAccessRights = () => {
+    setAccessDenied(false);
+    setAccessDeniedReason("");
     // If user is not logged in
     if (!user) {
+      if (!hasThreads()) {
+        // No threads, redirect to explore
+        router.push("/explore");
+        return false;
+      }
+
       if (space?.isPrivate) {
         // Unauthorized users can't access private spaces - redirect to login
         router.push("/login");
         return false;
       }
       // Public spaces are accessible to unauthorized users
+
       return true;
     }
 
@@ -205,7 +214,7 @@ const SpaceView = ({ spaceId }: SpaceViewProps) => {
   };
 
   // Determine if user is reader (not owner)
-  const isReader = user && !isOwner();
+  // const isReader = user && !isOwner();
 
   // Determine if we should show the invite editors button
   const shouldShowInviteEditors = isOwner() && !hasThreads();
@@ -242,17 +251,16 @@ const SpaceView = ({ spaceId }: SpaceViewProps) => {
           <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
           <p className="text-gray-600 mb-6">{accessDeniedReason}</p>
 
-          {space?.isPrivate &&
-            user &&
-            (user.role === "U" || user.role === "O" || user.role === "E") &&
-            !isSubscribed && (
-              <SpaceSubscriptionControls
-                spaceId={spaceId}
-                isSubscribed={isSubscribed}
-                isNewsletter={isNewsletter}
-                onSubscriptionChange={handleSubscriptionChange}
-              />
-            )}
+          {space?.isPrivate && !isSubscribed && (
+            <SpaceSubscriptionControls
+              isOwner={isOwner()}
+              isEditor={isEditorOwner()}
+              spaceId={spaceId}
+              isSubscribed={isSubscribed}
+              isNewsletter={isNewsletter}
+              onSubscriptionChange={handleSubscriptionChange}
+            />
+          )}
 
           <motion.button
             onClick={() => router.push("/explore")}
@@ -274,20 +282,29 @@ const SpaceView = ({ spaceId }: SpaceViewProps) => {
           {/* Space Header */}
           <SpaceHeader
             space={space}
-            onSubscribersClick={() => setShowSubscribers(true)}
+            onSubscribersClick={() => {
+              if (!user) {
+                showMessage({
+                  type: "info",
+                  message: "You need to be logged in to view subscribers.",
+                });
+                return;
+              }
+              setShowSubscribers(true);
+            }}
           />
 
           {/* Subscription Controls for readers */}
-          {user && isReader && (
-            <div className="max-w-4xl mx-auto px-4">
-              <SpaceSubscriptionControls
-                spaceId={spaceId}
-                isSubscribed={isSubscribed}
-                isNewsletter={isNewsletter}
-                onSubscriptionChange={handleSubscriptionChange}
-              />
-            </div>
-          )}
+          <div className="max-w-4xl mx-auto px-4">
+            <SpaceSubscriptionControls
+              isOwner={isOwner()}
+              isEditor={isEditorOwner()}
+              spaceId={spaceId}
+              isSubscribed={isSubscribed}
+              isNewsletter={isNewsletter}
+              onSubscriptionChange={handleSubscriptionChange}
+            />
+          </div>
 
           {/* Content Section */}
           <div className="max-w-4xl mx-auto px-4 mt-8">

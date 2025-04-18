@@ -49,11 +49,11 @@ const TagSelectionStep = () => {
     getTags();
   }, []);
 
-  const handleTagToggle = (tagId: string) => {
-    if (selectedTags.includes(tagId)) {
-      dispatch(setSelectedTags(selectedTags.filter((id) => id !== tagId)));
+  const handleTagToggle = (tag: Tag) => {
+    if (selectedTags.some((t) => t.id === tag.id)) {
+      dispatch(setSelectedTags(selectedTags.filter((t) => t.id !== tag.id)));
     } else {
-      dispatch(setSelectedTags([...selectedTags, tagId]));
+      dispatch(setSelectedTags([...selectedTags, tag]));
     }
   };
 
@@ -109,9 +109,9 @@ const TagSelectionStep = () => {
             {tags.map((tag) => (
               <motion.button
                 key={tag.id}
-                onClick={() => handleTagToggle(tag.id)}
+                onClick={() => handleTagToggle(tag)}
                 className={`px-2 py-1.5 rounded-md border-2 border-dashed text-center transition-all ${
-                  selectedTags.includes(tag.id)
+                  selectedTags.some((t) => t.id === tag.id)
                     ? "border-purple-500 text-purple-600 bg-purple-50"
                     : "border-gray-200 hover:border-gray-400"
                 }`}

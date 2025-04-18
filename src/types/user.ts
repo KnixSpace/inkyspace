@@ -1,3 +1,5 @@
+import { Tag } from "@/components/ui/form/TagInput";
+
 export interface User {
   userId: string;
   ownerId?: string;
@@ -7,5 +9,5 @@ export interface User {
   bio?: string;
   role: "O" | "A" | "U" | "E";
   onboardComplete: boolean;
-  subscribedTags?: string[];
+  subscribedTags?: Tag[];
 }

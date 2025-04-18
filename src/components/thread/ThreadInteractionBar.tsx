@@ -118,6 +118,14 @@ const ThreadInteractionBar = ({ threadId, likeCount }: InteractionBarProps) => {
 
   const handleShowLikes = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!user) {
+      showMessage({
+        type: "info",
+        message: "Please log in to view likes",
+      });
+      return;
+    }
+    
     if (!showInteractions) {
       fetchLikeInteractions();
     }

@@ -14,6 +14,7 @@ import { mapApiErrors } from "@/lib/apis/api";
 import { Controller, useForm } from "react-hook-form";
 import ImageUpload from "../ui/ImageUpload";
 import { uploadProfileImage } from "@/lib/cloudinary";
+import { Tag } from "../ui/form/TagInput";
 
 const ProfileSettings = () => {
   const dispatch = useAppDispatch();
@@ -27,16 +28,7 @@ const ProfileSettings = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [availableTags, setAvailableTags] = useState([
-    { id: "1", name: "Technology" },
-    { id: "2", name: "Business" },
-    { id: "3", name: "Health" },
-    { id: "4", name: "Science" },
-    { id: "5", name: "Arts" },
-    { id: "6", name: "Sports" },
-    { id: "7", name: "Politics" },
-    { id: "8", name: "Travel" },
-  ]);
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
 
   const { control } = useForm({ defaultValues: { avatar: profile.avatar } });
 
@@ -51,6 +43,7 @@ const ProfileSettings = () => {
         bio: user.bio || "",
         subscribedTags: user.subscribedTags || [],
       }));
+      setAvailableTags(user.subscribedTags || []);
       setIsLoading(false);
     }
   }, [user]);
@@ -62,18 +55,18 @@ const ProfileSettings = () => {
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleTagToggle = (tagId: string) => {
+  const handleTagToggle = (tag: Tag) => {
     setProfile((prev) => {
       const subscribedTags = prev.subscribedTags || [];
-      if (subscribedTags.includes(tagId)) {
+      if (subscribedTags.some((t) => t.id === tag.id)) {
         return {
           ...prev,
-          subscribedTags: subscribedTags.filter((id) => id !== tagId),
+          subscribedTags: subscribedTags.filter((t) => t.id !== tag.id),
         };
       } else {
         return {
           ...prev,
-          subscribedTags: [...subscribedTags, tagId],
+          subscribedTags: [...subscribedTags, tag],
         };
       }
     });
@@ -240,9 +233,9 @@ const ProfileSettings = () => {
                     <motion.button
                       key={tag.id}
                       type="button"
-                      onClick={() => handleTagToggle(tag.id)}
+                      onClick={() => handleTagToggle(tag)}
                       className={`px-3 py-2 rounded-md border-2 border-dashed text-center transition-all ${
-                        profile.subscribedTags?.includes(tag.id)
+                        profile.subscribedTags?.some((t) => t.id === tag.id)
                           ? "border-purple-500 text-purple-600 bg-purple-50"
                           : "border-gray-200 hover:border-gray-400"
                       }`}

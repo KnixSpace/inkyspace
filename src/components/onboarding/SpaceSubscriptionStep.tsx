@@ -29,7 +29,7 @@ import Image from "next/image";
 interface Space {
   spaceId: string;
   title: string;
-  image: string | null;
+  coverImage: string | null;
   description: string;
   ownerName: string;
   subscribers: number;
@@ -51,7 +51,9 @@ const SpaceSubscriptionStep = () => {
       }
 
       try {
-        const response = await fetchSuggestedSpaces(selectedTags);
+        const response = await fetchSuggestedSpaces(
+          selectedTags.map((tag) => tag.name as string)
+        );
         if (response.success && response.data?.length) {
           setSpaces(response.data);
         } else {
@@ -164,9 +166,11 @@ const SpaceSubscriptionStep = () => {
               transition={{ duration: 0.3 }}
             >
               <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 ">
-                {space.image ? (
+                {space.coverImage ? (
                   <Image
-                    src={space.image || "/placeholder.svg?height=64&width=64"}
+                    src={
+                      space.coverImage || "/placeholder.svg?height=64&width=64"
+                    }
                     alt={space.title}
                     fill
                     className="object-cover"
