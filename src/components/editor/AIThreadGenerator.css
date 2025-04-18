@@ -1,0 +1,206 @@
+.ai-thread-generator {
+    padding: 16px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.ai-thread-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.ai-thread-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.ai-thread-input {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.ai-thread-input:focus {
+    outline: none;
+    border-color: #ad46ff;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.ai-thread-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    background-color: white;
+}
+
+.ai-thread-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.ai-thread-button {
+    padding: 10px 16px;
+    background-color: #ad46ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.ai-thread-button:hover {
+    background-color: #9b59b6;
+}
+
+.ai-thread-button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.ai-thread-content-wrapper {
+    margin-top: 16px;
+}
+
+.ai-thread-generated-content {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    overflow: hidden;
+}
+
+.ai-thread-readonly {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    overflow: hidden;
+}
+
+.ai-thread-text {
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #334155;
+    white-space: pre-wrap;
+}
+
+.ai-thread-actions {
+    display: flex;
+    padding: 12px 16px;
+    background-color: #f1f5f9;
+    gap: 12px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.ai-thread-insert {
+    background-color: #10b981;
+}
+
+.ai-thread-insert:hover {
+    background-color: #059669;
+}
+
+.ai-thread-regenerate {
+    background-color: #ad46ff;
+}
+
+.ai-thread-regenerate:hover {
+    background-color: #ad46ff;
+}
+
+.ai-thread-error {
+    color: #ef4444;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background-color: #fee2e2;
+    border-radius: 4px;
+    border-left: 3px solid #ef4444;
+}
+
+/* Shimmer Loading Effect */
+.ai-thread-shimmer {
+    padding: 16px;
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.ai-thread-shimmer-line {
+    height: 12px;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg,
+            #f1f5f9 0%,
+            #e2e8f0 50%,
+            #f1f5f9 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.ai-thread-shimmer-line:nth-child(1) {
+    width: 85%;
+}
+
+.ai-thread-shimmer-line:nth-child(2) {
+    width: 95%;
+}
+
+.ai-thread-shimmer-line:nth-child(3) {
+    width: 75%;
+}
+
+.ai-thread-shimmer-line:nth-child(4) {
+    width: 90%;
+}
+
+.ai-thread-shimmer-line:nth-child(5) {
+    width: 60%;
+    margin-bottom: 0;
+}
+
+/* ReadOnly mode styles */
+.ai-thread-readonly-placeholder {
+    padding: 16px;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #64748b;
+    font-style: italic;
+}
+
+.ai-thread-readonly-empty {
+    padding: 16px;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #94a3b8;
+    text-align: center;
+    font-style: italic;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}

@@ -43,10 +43,8 @@ const ExploreSearchBar = ({ onSearch, searchQuery }: ExploreSearchBarProps) => {
 
   return (
     <motion.div
-      className={`relative flex items-center w-full mx-auto mb-8 rounded-lg ${
-        isFocused
-          ? "ring-2 ring-purple-500 bg-white shadow-lg"
-          : "bg-gray-50 shadow"
+      className={`relative flex items-center w-full mx-auto mb-8 rounded-lg  border-2 border-dashed border-gray-300 ${
+        isFocused && "border-purple-500"
       } transition-all duration-200`}
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}

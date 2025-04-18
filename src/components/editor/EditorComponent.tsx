@@ -42,100 +42,116 @@ export default function EditorComponent({
         const Raw = (await import("@editorjs/raw")).default;
         const LinkTool = (await import("@editorjs/link")).default;
 
+        // Import our custom AI Thread Generator tool
+        const AIThreadGenerator = (await import("./AIThreadGenerator")).default;
+
         if (!isMounted || !elementRef.current) return;
+
+        // Define the tools object
+        const tools: Record<string, any> = {
+          header: {
+            class: Header,
+            config: {
+              levels: [1, 2, 3, 4, 5, 6],
+              defaultLevel: 2,
+            },
+          },
+          list: List,
+          paragraph: {
+            class: Paragraph,
+            inlineToolbar: true,
+          },
+          image: {
+            class: Image,
+            config: {
+              uploader: {
+                uploadByFile: uploadImageForEditor,
+              },
+              captionPlaceholder: "Image caption",
+            },
+          },
+          embed: {
+            class: Embed,
+            config: {
+              services: {
+                youtube: true,
+                twitter: true,
+                facebook: true,
+                instagram: true,
+                codepen: true,
+                bitly: true,
+              },
+              placeholder: "Paste a link to embed",
+              captionPlaceholder: "Embed caption",
+            },
+          },
+          table: {
+            class: Table,
+            inlineToolbar: true,
+            config: {
+              rows: 2,
+              cols: 3,
+              withHeadings: true,
+            },
+          },
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+            config: {
+              quotePlaceholder: "Enter a quote",
+              captionPlaceholder: "Quote's author",
+            },
+          },
+          code: {
+            class: Code,
+            config: {
+              placeholder: "Enter code",
+            },
+          },
+          inlineCode: InlineCode,
+          marker: {
+            class: Marker,
+            inlineToolbar: true,
+            shortcut: "CTRL+SHIFT+M",
+          },
+          raw: {
+            class: Raw,
+            inlineToolbar: true,
+            shortcut: "CTRL+ALT+R",
+            config: {
+              placeholder: "Enter raw HTML",
+            },
+          },
+          linkTool: {
+            class: LinkTool,
+            config: {
+              endpoint: "/api/editor/link", // Your backend endpoint for url data fetching
+              field: "link",
+              inputPlaceholder: "Paste a link to embed",
+              captionPlaceholder: "Link caption",
+            },
+          },
+        };
+
+        // Only add AI Thread tool if we're not in readonly mode
+        if (!readOnly) {
+          tools["aiThread"] = {
+            class: AIThreadGenerator,
+            config: {
+              readOnly: readOnly,
+            },
+          };
+        }
 
         const editor = new EditorJS({
           holder: elementRef.current,
           data: data || { blocks: [] },
           readOnly,
           placeholder,
-          autofocus: true,
-          tools: {
-            header: {
-              class: Header,
-              config: {
-                levels: [1, 2, 3, 4, 5, 6],
-                defaultLevel: 2,
-              },
-            },
-            list: List,
-            paragraph: {
-              class: Paragraph,
-              inlineToolbar: true,
-            },
-            image: {
-              class: Image,
-              config: {
-                uploader: {
-                  uploadByFile: uploadImageForEditor,
-                },
-                captionPlaceholder: "Image caption",
-              },
-            },
-            embed: {
-              class: Embed,
-              config: {
-                services: {
-                  youtube: true,
-                  twitter: true,
-                  facebook: true,
-                  instagram: true,
-                  codepen: true,
-                  bitly: true,
-                },
-                placeholder: "Paste a link to embed",
-                captionPlaceholder: "Embed caption",
-              },
-            },
-            table: {
-              class: Table,
-              inlineToolbar: true,
-              config: {
-                rows: 2,
-                cols: 3,
-                withHeadings: true,
-              },
-            },
-            quote: {
-              class: Quote,
-              inlineToolbar: true,
-              config: {
-                quotePlaceholder: "Enter a quote",
-                captionPlaceholder: "Quote's author",
-              },
-            },
-            code: {
-              class: Code,
-              config: {
-                placeholder: "Enter code",
-              },
-            },
-            inlineCode: InlineCode,
-            marker: {
-              class: Marker,
-              inlineToolbar: true,
-              shortcut: "CTRL+SHIFT+M",
-            },
-            raw: {
-              class: Raw,
-              inlineToolbar: true,
-              shortcut: "CTRL+ALT+R",
-              config: {
-                placeholder: "Enter raw HTML",
-              },
-            },
-            linkTool: {
-              class: LinkTool,
-              config: {
-                endpoint: "/api/editor/link", // Your backend endpoint for url data fetching
-                field: "link",
-                inputPlaceholder: "Paste a link to embed",
-                captionPlaceholder: "Link caption",
-              },
-            },
-          },
+          autofocus: !readOnly, // Only autofocus when not in readonly mode
+          tools,
           onChange: async () => {
-            if (editor && onChange) {
+            if (editor && onChange && !readOnly) {
               try {
                 const outputData = await editor.save();
                 onChange(outputData);
@@ -164,10 +180,12 @@ export default function EditorComponent({
       }
       isInitializedRef.current = false;
     };
-  }, []);
+  }, [readOnly]); // Added readOnly to the dependency array
 
   return (
-    <div className="w-full rounded-lg border-2 border-dashed border-gray-300 py-8">
+    <div
+      className={`w-full rounded-lg border-2 border-dashed ${readOnly ? "border-gray-200" : "border-gray-300"} py-8`}
+    >
       <div ref={elementRef} className="w-full" />
     </div>
   );
